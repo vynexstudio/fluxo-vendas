@@ -38,23 +38,30 @@ export function Logo({ compact, tone = "dark" }: { compact?: boolean; tone?: "da
   );
 }
 
-/* Logo em PNG: prioriza o upload feito no Painel do Sistema,
-   depois /logo.png (public/logo.png) e, por fim, a marca vetorial. */
+/* Logo em destaque no topo: placa clara que realça qualquer logo
+   (inclusive PNGs escuros) sobre o fundo da sidebar.
+   Prioriza o upload do Painel do Sistema, depois /logo.png e,
+   por fim, a marca vetorial. */
 function BrandLogo() {
   const b = useBranding();
   const [fallback, setFallback] = useState(false);
   const src = b.logoDataUrl ?? "/logo.png";
-  const showImg = b.logoDataUrl ? true : !fallback;
-  if (!showImg) return <Logo />;
+  const hasImg = b.logoDataUrl ? true : !fallback;
   return (
-    <img
-      key={src}
-      src={src}
-      alt={`${b.appName} — logo`}
-      className="h-10 w-auto max-w-[170px] object-contain object-left"
-      onError={() => { if (!b.logoDataUrl) setFallback(true); }}
-      draggable={false}
-    />
+    <span className="flex h-14 flex-1 items-center justify-center rounded-xl bg-white px-3 py-2 shadow-[0_3px_14px_rgb(2_18_48/0.4)] ring-1 ring-white/30 transition-transform duration-200 hover:scale-[1.015]">
+      {hasImg ? (
+        <img
+          key={src}
+          src={src}
+          alt={`${b.appName} — logo`}
+          className="max-h-10 w-auto max-w-[184px] object-contain"
+          onError={() => { if (!b.logoDataUrl) setFallback(true); }}
+          draggable={false}
+        />
+      ) : (
+        <Logo tone="light" />
+      )}
+    </span>
   );
 }
 
@@ -288,7 +295,7 @@ function NotifBell() {
 function NavList({ onNavigate, activePath, role, isSuper }: { onNavigate: () => void; activePath: string; role?: Role; isSuper?: boolean }) {
   const { db } = useApp();
   return (
-    <nav className="flex-1 space-y-5 overflow-y-auto px-3 pb-6" aria-label="Navegação principal">
+    <nav className="space-y-5 px-3 pb-6" aria-label="Navegação principal">
       {NAV.map((g) => {
         const items = g.items.filter((i) => can(role, i.area));
         if (!items.length) return null;
@@ -386,7 +393,7 @@ export function Shell({ children }: { children: ReactNode }) {
             </span>
           </div>
         )}
-        <div className="mt-4 flex-1 overflow-hidden">
+        <div className="nav-scroll mt-4 min-h-0 flex-1 overflow-y-auto">
           <NavList onNavigate={() => {}} activePath={path} role={user?.role} isSuper={!!user?.super} />
         </div>
         <div className="border-t border-pine-800 p-3">
@@ -414,7 +421,7 @@ export function Shell({ children }: { children: ReactNode }) {
               <BrandLogo />
               <IconBtn label="Fechar menu" onClick={() => setDrawer(false)} className="text-pine-300 hover:bg-pine-800"><X size={18} /></IconBtn>
             </div>
-            <div className="mt-3 flex-1 overflow-hidden">
+            <div className="nav-scroll mt-3 min-h-0 flex-1 overflow-y-auto">
               <NavList onNavigate={() => setDrawer(false)} activePath={path} role={user?.role} isSuper={!!user?.super} />
             </div>
             <div className="border-t border-pine-800 p-3">

@@ -175,6 +175,6 @@ export function mulberry32(a: number): () => number {
 export function productColor(name: string): string {
   let h = 0;
   for (const c of name) h = (h * 31 + c.charCodeAt(0)) | 0;
-  const colors = ["#14684a", "#3f759c", "#c07f1d", "#8a5fb0", "#b0563f", "#2a7a5b", "#4e7d94", "#a2653a", "#5b7d3a", "#7a5c9e"];
+  const colors = ["#0047b3", "#3f759c", "#00a3e6", "#0b3a8c", "#0066ff", "#53657d", "#12bfff", "#0052d9", "#7a9bc4", "#041129"];
   return colors[Math.abs(h) % colors.length];
 }

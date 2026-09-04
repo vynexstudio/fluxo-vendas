@@ -8,14 +8,14 @@ import {
 import { brlShort } from "../lib/utils";
 
 export const CHART = {
-  pine: "#14684a",
-  leaf: "#a2cf37",
-  leafBright: "#c0e95f",
+  pine: "#0066ff",
+  leaf: "#12bfff",
+  leafBright: "#4fc8ff",
   danger: "#c74a4a",
   warn: "#d99326",
   info: "#3f759c",
-  grid: "#e2e6de",
-  label: "#8b958e",
+  grid: "#e4eaf2",
+  label: "#8a9cb4",
 };
 
 function Tip({ active, payload, label, money = true }: { active?: boolean; payload?: { name?: string; value?: number | string; color?: string }[]; label?: string; money?: boolean }) {
@@ -100,7 +100,7 @@ export function LucroChart({ data, height = 260 }: { data: { label: string; fatu
 }
 
 export function DonutChart({ data, height = 220 }: { data: { name: string; value: number }[]; height?: number }) {
-  const colors = [CHART.pine, CHART.info, CHART.warn, CHART.leaf, CHART.danger, "#8a5fb0", "#4e7d94", "#a2653a"];
+  const colors = [CHART.pine, "#0b3a8c", CHART.warn, CHART.leaf, CHART.danger, "#53657d", "#0082be", "#7a9bc4"];
   const valid = data.filter((d) => d.value > 0);
   if (!valid.length) return <p className="py-10 text-center text-[13px] text-ink-faint">Sem dados no período.</p>;
   return (

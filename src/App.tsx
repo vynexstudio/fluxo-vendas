@@ -34,7 +34,7 @@ const AREA_OF: Record<string, string> = {
 
 function Splash() {
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center gap-5 bg-pine-900">
+    <div className="brand-grad flex min-h-dvh flex-col items-center justify-center gap-5">
       <div className="animate-scale-in"><Logo /></div>
       <Spinner className="text-leaf-400" />
       <p className="text-[12.5px] font-medium text-pine-300">Preparando seu negócio…</p>

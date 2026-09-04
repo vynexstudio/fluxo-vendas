@@ -369,7 +369,7 @@ export function CatalogPublicPage({ slug }: { slug: string }) {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {products.map((p) => (
               <article key={p.id} className="animate-fade-up group flex flex-col overflow-hidden rounded-xl border border-line bg-surface shadow-card transition-all hover:-translate-y-1 hover:shadow-pop">
-                <div className="relative flex h-28 items-center justify-center sm:h-32" style={{ background: `linear-gradient(135deg, #14684a18, #3f759c18)` }}>
+                <div className="relative flex h-28 items-center justify-center sm:h-32" style={{ background: `linear-gradient(135deg, #0066ff14, #12bfff24)` }}>
                   <ProductThumb name={p.name} size={56} />
                   {p.stock <= p.minStock && <Badge tone="amber" className="absolute right-2 top-2">últimas unidades</Badge>}
                 </div>

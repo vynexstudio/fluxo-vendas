@@ -16,18 +16,20 @@ import { PERMISSIONS, ROLE_LABEL } from "../lib/types";
 import type { Role } from "../lib/types";
 import { Badge, IconBtn } from "./ui";
 
-export function Logo({ compact }: { compact?: boolean }) {
+export function Logo({ compact, tone = "dark" }: { compact?: boolean; tone?: "dark" | "light" }) {
   return (
     <span className="flex items-center gap-2.5">
-      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-pine-950 ring-1 ring-pine-700/60">
+      <span className="brand-grad flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-sm ring-1 ring-white/25">
         <svg width="20" height="20" viewBox="0 0 64 64" fill="none" aria-hidden>
-          <path d="M10 42 L24 42 L30 20 L38 50 L45 30 L54 30" stroke="#c0e95f" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M10 42 L24 42 L30 20 L38 50 L45 30 L54 30" stroke="#eaf6ff" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </span>
       {!compact && (
         <span className="leading-none">
-          <span className="block font-display text-[17px] font-bold tracking-tight text-leaf-300">Fluxo</span>
-          <span className="block text-[10px] font-medium uppercase tracking-[0.14em] text-pine-400">gestão descomplicada</span>
+          <span className={cx("block font-display text-[18px] font-extrabold tracking-tight", tone === "light" ? "text-ink" : "text-leaf-200")}>Fluxo</span>
+          <span className={cx("mt-1 block text-[8.5px] font-semibold uppercase", tone === "light" ? "text-ink-soft" : "text-pine-300")} style={{ letterSpacing: "3px" }}>
+            gestão simples
+          </span>
         </span>
       )}
     </span>

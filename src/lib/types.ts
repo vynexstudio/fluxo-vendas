@@ -310,6 +310,6 @@ export const PERMISSIONS: Record<string, { label: string; roles: Role[] }> = {
 };
 
 export const PRODUCT_COLORS = [
-  "#14684a", "#3f759c", "#c07f1d", "#8a5fb0", "#c74a4a",
-  "#2a7a5b", "#4e7d94", "#a2653a", "#5b7d3a", "#7a5c9e",
+  "#0047b3", "#3f759c", "#00a3e6", "#0b3a8c", "#0066ff",
+  "#53657d", "#12bfff", "#0052d9", "#7a9bc4", "#06295e",
 ];

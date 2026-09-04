@@ -465,7 +465,7 @@ export function buildReport(d: DB, type: string, r: Range): ReportResult {
         chart: {
           data: data as unknown as Record<string, string | number>[],
           x: "label",
-          series: [{ key: "faturamento", color: "#14684a", label: "Faturamento" }, { key: "lucro", color: "#c0e95f", label: "Lucro" }],
+          series: [{ key: "faturamento", color: "#0066ff", label: "Faturamento" }, { key: "lucro", color: "#12bfff", label: "Lucro" }],
         },
       };
     }
@@ -479,7 +479,7 @@ export function buildReport(d: DB, type: string, r: Range): ReportResult {
         summary: [{ label: "Produtos vendidos", value: String(tops.length) }],
         chart: {
           data: tops.slice(0, 8).map((t) => ({ name: t.name, qty: t.qty })),
-          x: "name", series: [{ key: "qty", color: "#14684a", label: "Unidades" }],
+          x: "name", series: [{ key: "qty", color: "#0066ff", label: "Unidades" }],
         },
       };
     }
@@ -554,7 +554,7 @@ export function buildReport(d: DB, type: string, r: Range): ReportResult {
         chart: {
           data: data as unknown as Record<string, string | number>[],
           x: "label",
-          series: [{ key: "in", color: "#14684a", label: "Entradas" }, { key: "out", color: "#c74a4a", label: "Saídas" }],
+          series: [{ key: "in", color: "#0066ff", label: "Entradas" }, { key: "out", color: "#c74a4a", label: "Saídas" }],
         },
       };
     }

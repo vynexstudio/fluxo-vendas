@@ -56,7 +56,7 @@ interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 export function Button({ variant = "primary", size = "md", className, ...rest }: BtnProps) {
   const v: Record<BtnVariant, string> = {
-    primary: "bg-pine-600 text-leaf-200 hover:bg-pine-700 active:bg-pine-800 shadow-sm",
+    primary: "bg-pine-500 text-white hover:bg-pine-600 active:bg-pine-700 shadow-sm",
     dark: "bg-pine-900 text-leaf-300 hover:bg-pine-950",
     outline: "border border-line-strong bg-surface text-ink hover:bg-pine-50 hover:border-pine-300",
     ghost: "text-ink-soft hover:bg-pine-50 hover:text-pine-700",
@@ -412,7 +412,7 @@ export function PageHead({ title, desc, children }: { title: string; desc?: stri
 export function ProductThumb({ name, size = 36 }: { name: string; size?: number }) {
   let h = 0;
   for (const c of name) h = (h * 31 + c.charCodeAt(0)) | 0;
-  const colors = ["#14684a", "#3f759c", "#c07f1d", "#8a5fb0", "#b0563f", "#2a7a5b", "#4e7d94", "#a2653a", "#5b7d3a", "#7a5c9e"];
+  const colors = ["#0047b3", "#3f759c", "#00a3e6", "#0b3a8c", "#0066ff", "#53657d", "#12bfff", "#0052d9", "#7a9bc4", "#041129"];
   const bg = colors[Math.abs(h) % colors.length];
   const initials = name.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
   return (

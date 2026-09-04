@@ -1,35 +1,35 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Sora", "IBM Plex Sans", sans-serif;
-  --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-display: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  --font-body: "Plus Jakarta Sans", "Segoe UI", sans-serif;
 
-  --color-paper: #f1f3ee;
-  --color-surface: #fcfcfa;
-  --color-ink: #17211b;
-  --color-ink-soft: #5b6660;
-  --color-ink-faint: #8b958e;
-  --color-line: #e2e6de;
-  --color-line-strong: #cfd6cb;
+  --color-paper: #f7f9fc;
+  --color-surface: #ffffff;
+  --color-ink: #061b3a;
+  --color-ink-soft: #53657d;
+  --color-ink-faint: #8a9cb4;
+  --color-line: #e4eaf2;
+  --color-line-strong: #c9d6e6;
 
-  --color-pine-50: #edf5f0;
-  --color-pine-100: #d8eae0;
-  --color-pine-200: #b3d5c4;
-  --color-pine-300: #83b8a0;
-  --color-pine-400: #4e9478;
-  --color-pine-500: #2a7a5b;
-  --color-pine-600: #14684a;
-  --color-pine-700: #0f553d;
-  --color-pine-800: #0c4330;
-  --color-pine-900: #0a3527;
-  --color-pine-950: #06231a;
+  --color-pine-50: #edf4ff;
+  --color-pine-100: #dbe9ff;
+  --color-pine-200: #b8d4ff;
+  --color-pine-300: #8bb9ff;
+  --color-pine-400: #5795ff;
+  --color-pine-500: #0066ff;
+  --color-pine-600: #0052d9;
+  --color-pine-700: #0047b3;
+  --color-pine-800: #0b3a8c;
+  --color-pine-900: #061b3a;
+  --color-pine-950: #041129;
 
-  --color-leaf-200: #eaf8c5;
-  --color-leaf-300: #dcf5a0;
-  --color-leaf-400: #cdf082;
-  --color-leaf-500: #c0e95f;
-  --color-leaf-600: #a2cf37;
-  --color-leaf-700: #7fa524;
+  --color-leaf-200: #c9edff;
+  --color-leaf-300: #90dbff;
+  --color-leaf-400: #4fc8ff;
+  --color-leaf-500: #12bfff;
+  --color-leaf-600: #00a3e6;
+  --color-leaf-700: #0082be;
 
   --color-danger: #c74a4a;
   --color-danger-soft: #fbeeee;
@@ -38,8 +38,8 @@
   --color-info: #3f759c;
   --color-info-soft: #eaf2f8;
 
-  --shadow-card: 0 1px 2px rgb(23 33 27 / 0.05), 0 4px 16px -6px rgb(23 33 27 / 0.08);
-  --shadow-pop: 0 2px 6px rgb(23 33 27 / 0.08), 0 16px 40px -12px rgb(23 33 27 / 0.22);
+  --shadow-card: 0 1px 2px rgb(6 27 58 / 0.05), 0 4px 16px -6px rgb(6 27 58 / 0.08);
+  --shadow-pop: 0 2px 6px rgb(6 27 58 / 0.08), 0 16px 40px -12px rgb(6 27 58 / 0.22);
 
   --animate-fade-up: fadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-scale-in: scaleIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -85,6 +85,10 @@ html, body {
 }
 
 .tnum { font-variant-numeric: tabular-nums; }
+
+.brand-grad {
+  background: linear-gradient(135deg, #0047b3 0%, #0066ff 55%, #12bfff 100%);
+}
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }

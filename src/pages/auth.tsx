@@ -12,10 +12,10 @@ import { brl } from "../lib/utils";
 function AuthFrame({ children, side }: { children: React.ReactNode; side: React.ReactNode }) {
   return (
     <div className="flex min-h-dvh">
-      <aside className="relative hidden w-[46%] flex-col justify-between overflow-hidden bg-pine-900 p-10 lg:flex">
+      <aside className="brand-grad relative hidden w-[46%] flex-col justify-between overflow-hidden p-10 lg:flex">
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.16]"
-          style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #c0e95f 1px, transparent 0)", backgroundSize: "26px 26px" }}
+          className="pointer-events-none absolute inset-0 opacity-[0.14]"
+          style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #4fc8ff 1px, transparent 0)", backgroundSize: "26px 26px" }}
         />
         <div className="relative"><Logo /></div>
         <div className="relative">{side}</div>
@@ -102,7 +102,7 @@ export function LoginPage() {
 
   return (
     <AuthFrame side={<AuthSide />}>
-      <div className="mb-7 lg:hidden"><Logo /></div>
+      <div className="mb-7 lg:hidden"><Logo tone="light" /></div>
       <div className="rounded-2xl border border-line bg-surface p-6 shadow-card sm:p-8">
         {mode === "forgot" ? (
           <>

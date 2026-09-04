@@ -1,0 +1,16 @@
+{
+  "name": "Fluxo — Gestão do seu negócio",
+  "short_name": "Fluxo",
+  "description": "Administre vendas, estoque, caixa e lucro sem complicação.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a3527",
+  "theme_color": "#0a3527",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

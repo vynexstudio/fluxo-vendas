@@ -19,6 +19,7 @@ import { CashPage, CashflowPage, ProfitPage } from "./pages/cash";
 import ReportsPage from "./pages/reports";
 import OrdersPage, { CatalogManagerPage, CatalogPublicPage } from "./pages/orders";
 import SettingsPage from "./pages/settings";
+import AdminConsolePage from "./pages/admin";
 import { CustomersPage, SuppliersPage, EmployeesPage } from "./pages/people";
 
 const AREA_OF: Record<string, string> = {
@@ -86,8 +87,8 @@ function Router() {
   }
 
   if (!user) return <LoginPage />;
-  if (db.business && !db.business.onboarded && path !== "/onboarding") return <OnboardingPage />;
-  if (path === "/onboarding") return <OnboardingPage />;
+  if (!user.super && db.business && !db.business.onboarded && path !== "/onboarding") return <OnboardingPage />;
+  if (!user.super && path === "/onboarding") return <OnboardingPage />;
 
   const area = AREA_OF[path];
   const page =
@@ -110,6 +111,16 @@ function Router() {
     path === "/catalogo" ? <CatalogManagerPage /> :
     path === "/config" ? <SettingsPage /> :
     <DashboardPage />;
+
+  // Administrador do Sistema: console próprio em /admin e acesso total ao app
+  if (user.super && path === "/admin") {
+    return (
+      <>
+        {offline && <OfflineBar />}
+        <AdminConsolePage />
+      </>
+    );
+  }
 
   return (
     <>

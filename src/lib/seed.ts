@@ -16,6 +16,10 @@ export async function buildSeed(): Promise<DB> {
     id: "u-demo", name: "Alex Demo", email: "demo@fluxo.app",
     passHash: await hashPass("demo123"), role: "admin" as const, createdAt: new Date().toISOString(),
   };
+  const sysUser = {
+    id: "sys-admin", name: "Administrador do Sistema", email: "admin@fluxo.app",
+    passHash: await hashPass("admin123"), role: "admin" as const, super: true, createdAt: new Date().toISOString(),
+  };
 
   const suppliers: Supplier[] = [
     { id: "f1", name: "Fornecedor Alpha", doc: "12.345.678/0001-90", phone: "(11) 98888-1001", email: "contato@alpha.com.br", address: "Av. Industrial, 500 — São Paulo/SP", notes: "Entrega às terças", createdAt: new Date().toISOString() },
@@ -168,7 +172,7 @@ export async function buildSeed(): Promise<DB> {
   }
 
   const db: DB = {
-    users: [demoUser],
+    users: [sysUser, demoUser],
     business: {
       id: "b1", name: "Aurora Store", segment: "Loja", sells: "Produtos",
       slug: "aurora-store", phone: "(11) 91234-5678", address: "Rua do Comércio, 250 — São Paulo/SP",

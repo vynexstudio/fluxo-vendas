@@ -13,7 +13,7 @@ interface AppCtx {
   user: User | null;
   ready: boolean;
   update: (fn: (d: DB) => void) => void;
-  login: (email: string, pass: string) => Promise<string | null>;
+  login: (email: string, pass: string) => Promise<{ err: string | null; isSuper: boolean }>;
   loginDemo: () => Promise<void>;
   signup: (inp: { name: string; email: string; pass: string; business: string; segment: string; sells: string }) => Promise<string | null>;
   logout: () => void;
@@ -21,6 +21,7 @@ interface AppCtx {
   resetDemo: () => Promise<void>;
   clearDemo: () => void;
   importDB: (d: DB) => void;
+  wipeAll: () => void;
   route: string;
   path: string;
   query: URLSearchParams;
@@ -47,6 +48,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
       let d = dbService.load();
       if (!d) {
         d = await buildSeed();
+        dbService.save(d);
+      }
+      // Migração: garante a existência da conta de Administrador do Sistema
+      if (!d.users.some((u) => u.super)) {
+        d.users.unshift({
+          id: "sys-admin", name: "Administrador do Sistema", email: "admin@fluxo.app",
+          passHash: await hashPass("admin123"), role: "admin", super: true, createdAt: new Date().toISOString(),
+        });
         dbService.save(d);
       }
       if (!alive) return;
@@ -80,14 +89,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (email: string, pass: string) => {
     const d = dbService.load();
-    if (!d) return "Sistema ainda não inicializado.";
+    if (!d) return { err: "Sistema ainda não inicializado.", isSuper: false };
     const u = d.users.find((x) => x.email.toLowerCase() === email.trim().toLowerCase());
-    if (!u) return "E-mail não encontrado.";
+    if (!u) return { err: "E-mail não encontrado.", isSuper: false };
     const h = await hashPass(pass);
-    if (u.passHash !== h) return "Senha incorreta.";
+    if (u.passHash !== h) return { err: "Senha incorreta.", isSuper: false };
     saveSession(u.id);
     setSessionId(u.id);
-    return null;
+    return { err: null, isSuper: !!u.super };
   }, []);
 
   const loginDemo = useCallback(async () => {
@@ -160,12 +169,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
     dbService.save(data);
   }, []);
 
+  const wipeAll = useCallback(() => {
+    dbService.wipe();
+    try {
+      localStorage.removeItem("fluxo.branding.v1");
+      localStorage.removeItem("fluxo.session");
+    } catch { /* noop */ }
+    window.location.hash = "/login";
+    window.location.reload();
+  }, []);
+
   const [path, queryString] = route.split("?");
   const query = useMemo(() => new URLSearchParams(queryString ?? ""), [queryString]);
 
   const value: AppCtx = {
     db, user, ready, update, login, loginDemo, signup, logout, finishOnboarding,
-    resetDemo, clearDemo, importDB, route, path, query, navigate,
+    resetDemo, clearDemo, importDB, wipeAll, route, path, query, navigate,
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

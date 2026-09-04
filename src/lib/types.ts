@@ -10,6 +10,7 @@ export interface User {
   email: string;
   passHash: string;
   role: Role;
+  super?: boolean;
   createdAt: string;
 }
 

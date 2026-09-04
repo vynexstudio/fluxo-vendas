@@ -7,16 +7,18 @@ import {
   LayoutDashboard, ShoppingCart, ClipboardList, Globe, Coins, Package, Boxes,
   Truck, Wallet, ArrowDownCircle, ArrowUpCircle, Receipt, TrendingUp, PiggyBank,
   Users, Factory, UserCog, BarChart3, Settings, Bell, Search, LogOut, Menu, X, ChevronRight,
-  AlertTriangle, Store,
+  AlertTriangle, Store, ShieldCheck,
 } from "lucide-react";
 import { useApp } from "../store";
 import { cx, brl, timeAgo, todayISO } from "../lib/utils";
 import { lowStock, receivableStatus, payableStatus } from "../lib/services";
 import { PERMISSIONS, ROLE_LABEL } from "../lib/types";
 import type { Role } from "../lib/types";
+import { useBranding } from "../lib/branding";
 import { Badge, IconBtn } from "./ui";
 
 export function Logo({ compact, tone = "dark" }: { compact?: boolean; tone?: "dark" | "light" }) {
+  const b = useBranding();
   return (
     <span className="flex items-center gap-2.5">
       <span className="brand-grad flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-sm ring-1 ring-white/25">
@@ -26,9 +28,9 @@ export function Logo({ compact, tone = "dark" }: { compact?: boolean; tone?: "da
       </span>
       {!compact && (
         <span className="leading-none">
-          <span className={cx("block font-display text-[18px] font-extrabold tracking-tight", tone === "light" ? "text-ink" : "text-leaf-200")}>Fluxo</span>
+          <span className={cx("block font-display text-[18px] font-extrabold tracking-tight", tone === "light" ? "text-ink" : "text-leaf-200")}>{b.appName}</span>
           <span className={cx("mt-1 block text-[8.5px] font-semibold uppercase", tone === "light" ? "text-ink-soft" : "text-pine-300")} style={{ letterSpacing: "3px" }}>
-            gestão simples
+            {b.tagline}
           </span>
         </span>
       )}
@@ -36,17 +38,22 @@ export function Logo({ compact, tone = "dark" }: { compact?: boolean; tone?: "da
   );
 }
 
-/* Logo em PNG: carrega /logo.png (colocado em public/logo.png).
-   Se o arquivo não existir, usa a marca vetorial como fallback. */
+/* Logo em PNG: prioriza o upload feito no Painel do Sistema,
+   depois /logo.png (public/logo.png) e, por fim, a marca vetorial. */
 function BrandLogo() {
+  const b = useBranding();
   const [fallback, setFallback] = useState(false);
-  if (fallback) return <Logo />;
+  const src = b.logoDataUrl ?? "/logo.png";
+  const showImg = b.logoDataUrl ? true : !fallback;
+  if (!showImg) return <Logo />;
   return (
     <img
-      src="/logo.png"
-      alt="Fluxo"
-      className="h-10 w-auto max-w-[170px] object-contain"
-      onError={() => setFallback(true)}
+      key={src}
+      src={src}
+      alt={`${b.appName} — logo`}
+      className="h-10 w-auto max-w-[170px] object-contain object-left"
+      onError={() => { if (!b.logoDataUrl) setFallback(true); }}
+      draggable={false}
     />
   );
 }
@@ -278,7 +285,7 @@ function NotifBell() {
 
 /* ---------------- Menu mobile / drawer ---------------- */
 
-function NavList({ onNavigate, activePath, role }: { onNavigate: () => void; activePath: string; role?: Role }) {
+function NavList({ onNavigate, activePath, role, isSuper }: { onNavigate: () => void; activePath: string; role?: Role; isSuper?: boolean }) {
   const { db } = useApp();
   return (
     <nav className="flex-1 space-y-5 overflow-y-auto px-3 pb-6" aria-label="Navegação principal">
@@ -317,6 +324,29 @@ function NavList({ onNavigate, activePath, role }: { onNavigate: () => void; act
           </div>
         );
       })}
+      {isSuper && (
+        <div>
+          <p className="mb-1 px-3 text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#6ea1e8]">Sistema</p>
+          <ul className="space-y-0.5">
+            <li>
+              <a
+                href="#/admin"
+                onClick={onNavigate}
+                aria-current={activePath === "/admin" ? "page" : undefined}
+                className={cx(
+                  "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] font-medium transition-all",
+                  activePath === "/admin"
+                    ? "bg-leaf-400/15 text-leaf-300 shadow-[inset_2px_0_0_0_var(--color-leaf-400)]"
+                    : "text-[#d9e8fb] hover:bg-pine-800/70 hover:text-white",
+                )}
+              >
+                <ShieldCheck size={17} />
+                <span className="flex-1">Painel do Sistema</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }
@@ -325,6 +355,7 @@ function NavList({ onNavigate, activePath, role }: { onNavigate: () => void; act
 
 export function Shell({ children }: { children: ReactNode }) {
   const { path, user, db, logout } = useApp();
+  const b = useBranding();
   const [drawer, setDrawer] = useState(false);
   const [more, setMore] = useState(false);
 
@@ -340,7 +371,7 @@ export function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-dvh">
       {/* Sidebar desktop */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col bg-pine-900 lg:flex">
+      <aside className={cx("fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col lg:flex", b.sidebarGradient ? "brand-grad" : "bg-pine-900")}>
         <div className="flex h-16 items-center border-b border-pine-800 px-5">
           <BrandLogo />
         </div>
@@ -356,7 +387,7 @@ export function Shell({ children }: { children: ReactNode }) {
           </div>
         )}
         <div className="mt-4 flex-1 overflow-hidden">
-          <NavList onNavigate={() => {}} activePath={path} role={user?.role} />
+          <NavList onNavigate={() => {}} activePath={path} role={user?.role} isSuper={!!user?.super} />
         </div>
         <div className="border-t border-pine-800 p-3">
           <div className="flex items-center gap-2.5 rounded-lg px-2 py-1.5">
@@ -378,13 +409,13 @@ export function Shell({ children }: { children: ReactNode }) {
       {drawer && (
         <div className="fixed inset-0 z-[60] lg:hidden" role="dialog" aria-modal="true">
           <button className="absolute inset-0 bg-pine-950/50" aria-label="Fechar menu" onClick={() => setDrawer(false)} />
-          <div className="animate-slide-in absolute inset-y-0 left-0 flex w-[270px] flex-col bg-pine-900">
+          <div className={cx("animate-slide-in absolute inset-y-0 left-0 flex w-[270px] flex-col", b.sidebarGradient ? "brand-grad" : "bg-pine-900")}>
             <div className="flex h-16 items-center justify-between border-b border-pine-800 px-5">
               <BrandLogo />
               <IconBtn label="Fechar menu" onClick={() => setDrawer(false)} className="text-pine-300 hover:bg-pine-800"><X size={18} /></IconBtn>
             </div>
             <div className="mt-3 flex-1 overflow-hidden">
-              <NavList onNavigate={() => setDrawer(false)} activePath={path} role={user?.role} />
+              <NavList onNavigate={() => setDrawer(false)} activePath={path} role={user?.role} isSuper={!!user?.super} />
             </div>
             <div className="border-t border-pine-800 p-3">
               <button onClick={logout} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13.5px] font-semibold text-pine-200 hover:bg-pine-800">

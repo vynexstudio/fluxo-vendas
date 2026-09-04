@@ -31,6 +31,10 @@
   --color-leaf-600: #00a3e6;
   --color-leaf-700: #0082be;
 
+  --grad-1: #0047b3;
+  --grad-2: #0066ff;
+  --grad-3: #12bfff;
+
   --color-danger: #c74a4a;
   --color-danger-soft: #fbeeee;
   --color-warn: #c07f1d;
@@ -87,7 +91,7 @@ html, body {
 .tnum { font-variant-numeric: tabular-nums; }
 
 .brand-grad {
-  background: linear-gradient(135deg, #0047b3 0%, #0066ff 55%, #12bfff 100%);
+  background: linear-gradient(135deg, var(--grad-1) 0%, var(--grad-2) 55%, var(--grad-3) 100%);
 }
 
 input[type="number"]::-webkit-outer-spin-button,

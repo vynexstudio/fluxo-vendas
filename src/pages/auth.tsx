@@ -2,7 +2,7 @@
  * Fluxo — Login, cadastro e onboarding
  * ============================================================ */
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, KeyRound, Rocket, Sparkles, Store } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, KeyRound, Rocket, ShieldCheck, Sparkles, Store } from "lucide-react";
 import { useApp } from "../store";
 import { Button, Field, Input, Select, Spinner, useToast } from "../components/ui";
 import { Logo } from "../components/layout";
@@ -73,11 +73,20 @@ export function LoginPage() {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email)) return setErr({ email: "E-mail inválido." });
     if (!f.pass) return setErr({ pass: "Informe a senha." });
     setBusy(true);
-    const error = await login(f.email, f.pass);
+    const res = await login(f.email, f.pass);
     setBusy(false);
-    if (error) return setErr({ form: error });
-    toast.push("success", "Bem-vindo de volta!");
-    navigate("/dashboard");
+    if (res.err) return setErr({ form: res.err });
+    toast.push("success", res.isSuper ? "Bem-vindo ao Painel do Sistema." : "Bem-vindo de volta!");
+    navigate(res.isSuper ? "/admin" : "/dashboard");
+  };
+
+  const doSys = async () => {
+    setBusy(true);
+    const res = await login("admin@fluxo.app", "admin123");
+    setBusy(false);
+    if (res.err) return toast.push("danger", "Acesso do sistema indisponível no momento.");
+    toast.push("success", "Bem-vindo ao Painel do Sistema.");
+    navigate("/admin");
   };
 
   const doSignup = async (e: React.FormEvent) => {
@@ -111,9 +120,15 @@ export function LoginPage() {
               Nesta versão os dados ficam no seu dispositivo, então não há envio de e-mail ainda.
               Use a <strong>conta de demonstração</strong> abaixo ou crie uma nova conta.
             </p>
-            <div className="mt-5 rounded-lg bg-pine-50 p-4 text-[13px] text-pine-800">
-              <p className="font-bold">Conta demo</p>
-              <p className="tnum mt-1">demo@fluxo.app · demo123</p>
+            <div className="mt-5 space-y-2.5">
+              <div className="rounded-lg bg-pine-50 p-4 text-[13px] text-pine-800">
+                <p className="font-bold">Conta demo (negócio)</p>
+                <p className="tnum mt-1">demo@fluxo.app · demo123</p>
+              </div>
+              <div className="rounded-lg bg-pine-50 p-4 text-[13px] text-pine-800">
+                <p className="font-bold flex items-center gap-1.5"><ShieldCheck size={13} /> Painel do Sistema</p>
+                <p className="tnum mt-1">admin@fluxo.app · admin123</p>
+              </div>
             </div>
             <Button variant="outline" className="mt-5 w-full" onClick={() => setMode("login")}>
               <ArrowLeft size={15} /> Voltar para o login
@@ -182,6 +197,10 @@ export function LoginPage() {
                 <Button variant="soft" className="w-full" disabled={busy} onClick={async () => { await loginDemo(); toast.push("success", "Você entrou no negócio de demonstração."); navigate("/dashboard"); }}>
                   <Store size={16} /> Explorar com dados de demonstração
                 </Button>
+                <Button variant="outline" className="mt-2 w-full" disabled={busy} onClick={doSys}>
+                  <ShieldCheck size={16} /> Painel do Sistema (admin)
+                </Button>
+                <p className="mt-2 text-center text-[11px] text-ink-faint">Acesso do sistema: admin@fluxo.app · admin123</p>
               </>
             )}
           </>

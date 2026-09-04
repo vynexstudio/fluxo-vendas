@@ -36,6 +36,21 @@ export function Logo({ compact, tone = "dark" }: { compact?: boolean; tone?: "da
   );
 }
 
+/* Logo em PNG: carrega /logo.png (colocado em public/logo.png).
+   Se o arquivo não existir, usa a marca vetorial como fallback. */
+function BrandLogo() {
+  const [fallback, setFallback] = useState(false);
+  if (fallback) return <Logo />;
+  return (
+    <img
+      src="/logo.png"
+      alt="Fluxo"
+      className="h-10 w-auto max-w-[170px] object-contain"
+      onError={() => setFallback(true)}
+    />
+  );
+}
+
 interface NavItem { path: string; label: string; icon: ReactNode; area: string }
 const NAV: { group: string; items: NavItem[] }[] = [
   {
@@ -272,7 +287,7 @@ function NavList({ onNavigate, activePath, role }: { onNavigate: () => void; act
         if (!items.length) return null;
         return (
           <div key={g.group}>
-            <p className="mb-1 px-3 text-[10.5px] font-bold uppercase tracking-[0.14em] text-pine-500">{g.group}</p>
+            <p className="mb-1 px-3 text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#6ea1e8]">{g.group}</p>
             <ul className="space-y-0.5">
               {items.map((i) => {
                 const active = activePath === i.path;
@@ -284,7 +299,7 @@ function NavList({ onNavigate, activePath, role }: { onNavigate: () => void; act
                       aria-current={active ? "page" : undefined}
                       className={cx(
                         "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] font-medium transition-all",
-                        active ? "bg-leaf-400/15 text-leaf-300 shadow-[inset_2px_0_0_0_var(--color-leaf-400)]" : "text-pine-200/85 hover:bg-pine-800/70 hover:text-leaf-200",
+                        active ? "bg-leaf-400/15 text-leaf-300 shadow-[inset_2px_0_0_0_var(--color-leaf-400)]" : "text-[#d9e8fb] hover:bg-pine-800/70 hover:text-white",
                       )}
                     >
                       {i.icon}
@@ -327,7 +342,7 @@ export function Shell({ children }: { children: ReactNode }) {
       {/* Sidebar desktop */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col bg-pine-900 lg:flex">
         <div className="flex h-16 items-center border-b border-pine-800 px-5">
-          <Logo />
+          <BrandLogo />
         </div>
         {biz && (
           <div className="mx-3 mt-3 flex items-center gap-2.5 rounded-lg bg-pine-800/60 px-3 py-2.5">
@@ -365,7 +380,7 @@ export function Shell({ children }: { children: ReactNode }) {
           <button className="absolute inset-0 bg-pine-950/50" aria-label="Fechar menu" onClick={() => setDrawer(false)} />
           <div className="animate-slide-in absolute inset-y-0 left-0 flex w-[270px] flex-col bg-pine-900">
             <div className="flex h-16 items-center justify-between border-b border-pine-800 px-5">
-              <Logo />
+              <BrandLogo />
               <IconBtn label="Fechar menu" onClick={() => setDrawer(false)} className="text-pine-300 hover:bg-pine-800"><X size={18} /></IconBtn>
             </div>
             <div className="mt-3 flex-1 overflow-hidden">
